@@ -3,9 +3,9 @@ from torch import nn
 
 class CustomLoss(nn.Module):
     """
-    Custom loss function, a combination of dog and human classification losses with 
-    breed classification loss. The loss function uses two BCEWithLogitsLoss, one for 
-    human and dog each, and a CrossEntropyLoss for the dog breed classification. 
+    Custom loss function, a combination of dog and human classification losses with
+    breed classification loss. The loss function uses two BCEWithLogitsLoss, one for
+    human and dog each, and a CrossEntropyLoss for the dog breed classification.
 
     loss = dog_loss + human_loss + breed_loss
 
@@ -40,7 +40,6 @@ class CustomLoss(nn.Module):
             t1: OneHot Encoded Targets for human vs dog classification.
             t2: Targets for dog breed classification. 
         """
-
         h_loss = self.human_loss(outputs[:, [self.human_idx]],
                                  t1[:, [self.human_idx]])
         d_loss = self.dog_loss(outputs[:, [self.dog_idx]],
@@ -51,3 +50,4 @@ class CustomLoss(nn.Module):
         b_loss = self.breed_loss(outputs[mask, 2:], t2[mask])
         loss = h_loss + d_loss + b_loss
         return loss
+        
