@@ -3,7 +3,9 @@ from . import datasets
 from . import labeller
 from . import engine
 from . import metrics
-from .imports import Path, os
+from . import models
+from . import loss_func
+from .imports import Path, os, torch
 from torch import optim
 
 
@@ -26,11 +28,14 @@ def get_datasets(path, human_train, human_valid,
     """
     breed_labeller = labeller.Labeller(breed_label_func)
     dog_human_labeller = labeller.Labeller(dog_human_label_func)
+    # if stats is None, dataset is being used to calculate batch_stat.
+    # So not using transforms.
+    train_tfms = None if stats is None \
+        else datasets.get_tfms(size, distortion_scale=0.5)
     train_ds = datasets.Dataset(
-        path, human_train, train_folder, 
+        path, human_train, train_folder,
         breed_labeller=breed_labeller, dog_human_labeller=dog_human_labeller,
-        stats=stats, tfms=datasets.get_tfms(size, distortion_scale=0.5),
-        size=size)
+        stats=stats, tfms=train_tfms, size=size)
     valid_ds = datasets.Dataset(
         path, human_valid, valid_folder,
         breed_labeller=breed_labeller, dog_human_labeller=dog_human_labeller,
@@ -38,10 +43,11 @@ def get_datasets(path, human_train, human_valid,
     return train_ds, valid_ds
 
 
-def get_device(use_cuda):
+def get_device():
     """
-    Return device string if use_cuda is true.
+    Return device string
     """
+    use_cuda = torch.cuda.is_available()
     return 'cuda' if use_cuda else 'cpu'
 
 
@@ -82,3 +88,34 @@ def run(n_epochs, model, optimizer, criterion, dls, device, recorder,
         print()
         print(output)
 
+
+def display_message(message):
+    print(message)
+    print()
+
+
+if __name__ == "__main__":
+    path_dogs = Path('input/dogImages')
+    path_human = Path('input/lfw')
+    clear_output()
+    display_message('+++++++++++++Creating Splits+++++++++++++')
+    human_train, human_valid, \
+        human_test = utils.create_splits_human_dataset(path_human)
+    display_message(
+        '+++++++++++++Calculating batch stats for normalizing+++++++++++++')
+    train_ds, _ = get_datasets(path_dogs, human_train, human_valid)
+    batch_stat = utils.get_batch_stat(train_ds)
+    display_message('+++++++++++++Creating DataLoaders+++++++++++++')
+    train_ds, valid_ds = get_datasets(path_dogs, human_train, human_valid,
+                                      stats=batch_stat)
+    dls = get_dls(train_ds, valid_ds, bs=64)
+    display_message(
+        '+++++++++++++Getting Model ready for training+++++++++++++')
+    model = models.ModelScratch()
+    optimizer = optim.Adam(model.parameters())
+    criterion = loss_func.CustomLoss(train_ds.dog_human_labeller)
+    recorder = metrics.Recorder()
+    device = get_device()
+    model.to(device)
+    n_epochs = 5
+    run(n_epochs, model, optimizer, criterion, dls, device, recorder)
