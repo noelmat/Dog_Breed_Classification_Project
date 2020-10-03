@@ -97,6 +97,7 @@ def show_batch(dl, rows=3, cols=3, **kwargs):
                              constrained_layout=True)
     dog_human_labeller = dl.dataset.dog_human_labeller
     breed_labeller = dl.dataset.breed_labeller
+    dl = get_dl(dl.dataset, bs=rows*cols)
     x, y1, y2 = get_one_batch(dl)
     x = denormalize(x, **kwargs)
     axes = axes.flatten()
