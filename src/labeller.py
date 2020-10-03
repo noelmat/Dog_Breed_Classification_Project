@@ -43,4 +43,4 @@ def human_or_dog(path):
     Args:
         path: path to the image.
     """
-    return 'human' if str(path).split('/')[0] == 'lfw' else 'dog'
+    return 'human' if 'lfw' in str(path).split('/') else 'dog'
