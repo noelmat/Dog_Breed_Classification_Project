@@ -7,6 +7,9 @@ from . import models
 from . import loss_func
 from .imports import Path, os, torch
 from torch import optim
+import argparse
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 def get_dls(train_ds, valid_ds, bs):
@@ -95,8 +98,14 @@ def display_message(message):
 
 
 if __name__ == "__main__":
-    path_dogs = Path('input/dogImages')
-    path_human = Path('input/lfw')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--path_dogs', metavar='Path_Dogs', type=str, required=True)
+    parser.add_argument('--path_human', metavar='Path_Human', type=str, required=True)
+    parser.add_argument('--batch_size', metavar='bs', type=int, required=True)
+    parser.add_argument('--n_epochs', metavar='EPOCHS', type=int, required=True)
+    args = parser.parse_args()
+    path_dogs = Path(args.path_dogs)
+    path_human = Path(args.path_human)
     clear_output()
     display_message('+++++++++++++Creating Splits+++++++++++++')
     human_train, human_valid, \
@@ -108,7 +117,7 @@ if __name__ == "__main__":
     display_message('+++++++++++++Creating DataLoaders+++++++++++++')
     train_ds, valid_ds = get_datasets(path_dogs, human_train, human_valid,
                                       stats=batch_stat)
-    dls = get_dls(train_ds, valid_ds, bs=64)
+    dls = get_dls(train_ds, valid_ds, bs=args.batch_size)
     display_message(
         '+++++++++++++Getting Model ready for training+++++++++++++')
     model = models.ModelScratch()
@@ -117,5 +126,5 @@ if __name__ == "__main__":
     recorder = metrics.Recorder()
     device = get_device()
     model.to(device)
-    n_epochs = 5
+    n_epochs = args.n_epochs
     run(n_epochs, model, optimizer, criterion, dls, device, recorder)
