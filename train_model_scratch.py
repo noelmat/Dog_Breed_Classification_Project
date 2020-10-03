@@ -15,10 +15,16 @@ parser.add_argument('--path_human', metavar='Path_Human', type=str,
                     required=True)
 parser.add_argument('--batch_size', metavar='bs', type=int, required=True)
 parser.add_argument('--n_epochs', metavar='EPOCHS', type=int, required=True)
-parser.add_argument('--img_size', metavar='bs', type=int, default=224)
+parser.add_argument('--img_size', metavar='imgsize', type=int, default=224)
+parser.add_argument('--lr', metavar='LR', type=float, default=0.1)
+parser.add_argument('--max_lr', metavar='MAX_LR_ONE_CYCLE', type=float,
+                    default=0.1)
+
 args = parser.parse_args()
+
 path_dogs = Path(args.path_dogs)
 path_human = Path(args.path_human)
+
 train.clear_output()
 train.display_message('+++++++++++++Creating Splits+++++++++++++')
 human_train, human_valid, \
@@ -34,10 +40,11 @@ dls = train.get_dls(train_ds, valid_ds, bs=args.batch_size)
 train.display_message(
     '+++++++++++++Getting Model ready for training+++++++++++++')
 model = models.ModelScratch()
-optimizer = optim.Adam(model.parameters())
-criterion = loss_func.CustomLoss(train_ds.dog_human_labeller)
-recorder = metrics.Recorder()
 device = train.get_device()
 model.to(device)
+optimizer = optim.Adam(model.parameters(), lr=args.lr)
+criterion = loss_func.CustomLoss(train_ds.dog_human_labeller)
+recorder = metrics.Recorder()
 n_epochs = args.n_epochs
-train.run(n_epochs, model, optimizer, criterion, dls, device, recorder)
+train.run(n_epochs, model, optimizer, criterion, dls, device, recorder,
+          max_lr=args.max_lr)
