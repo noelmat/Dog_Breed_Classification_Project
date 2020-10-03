@@ -4,14 +4,14 @@ from PIL import Image
 import torch
 
 
-class Dataset: 
+class Dataset:
     """
     Dataset for human vs dog classification along with dog breed
     classification
     Args:
         path_dogs: path to dog images dataset.
         human_paths: list of paths containing path to human face image.
-        folder: folder name for dog images dataset. Expected values are 
+        folder: folder name for dog images dataset. Expected values are
                 'train','valid' or 'test'
         breed_labeller: Labeller object for breed classification
         dog_human_labeller: Labeller object for dog vs human classification
@@ -38,7 +38,7 @@ class Dataset:
             self.tfms = tfms
         if stats is not None:
             self.tfms.append(transforms.Normalize(**stats))
-        self.tfms = transforms.Compose(self.tfms)        
+        self.tfms = transforms.Compose(self.tfms)       
 
     def __len__(self):
         return len(self.files)
@@ -54,5 +54,23 @@ class Dataset:
         dog_human_target = torch.zeros(2)
         dog_human_target[dog_human_label] = 1
         breed_target = torch.tensor(breed_label, dtype=torch.long)
-
         return img, dog_human_target, breed_target
+
+
+def get_tfms(size=224, distortion_scale=0.3, p=0.5):
+    """
+    Transforms for augmenting the data.
+    Args:
+        size: final size of the image for training.
+        distortion_scale: distortion scale for Random Perspective transforms
+        p: p-value for applying transforms
+    Returns:
+        list of transforms
+    """
+    tfms = [transforms.Resize((int(size*2.5), int(size*2.5))),
+            transforms.RandomPerspective(distortion_scale=distortion_scale,
+                                         p=p),
+            transforms.RandomResizedCrop(size, scale=(0.35, 0.75)),
+            transforms.RandomHorizontalFlip(p=p),
+            transforms.ToTensor()]
+    return tfms
