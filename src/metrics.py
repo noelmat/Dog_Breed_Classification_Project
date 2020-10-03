@@ -1,4 +1,5 @@
 import torch
+import tabulate
 
 
 def get_accuracy(acts, targets, sigmoid=True, thresh=0.5):
@@ -67,3 +68,29 @@ class Recorder:
         self.valid_acc_human.append(valid_metrics['accuracy_human'])
         self.valid_acc_dog.append(valid_metrics['accuracy_dog'])
         self.valid_acc_breed.append(valid_metrics['accuracy_breed'])
+
+
+def get_tab_output(recorder, epoch):
+    """
+    Creates a table of metrics from the recorder.
+    Args:
+        recorder: Recorder used for training.
+        epoch: current epoch.
+    Return:
+        tabulate table
+    """
+    output = []
+    output.append(['Epoch', 'T_loss', 'v_loss', 'ta_human', 'va_human','ta_dog','va_dog','ta_breed','va_breed'])
+    for i in range(epoch+1):
+        output.append([
+            i+1,
+            recorder.train_loss[i],
+            recorder.valid_loss[i],
+            recorder.train_acc_human[i],
+            recorder.valid_acc_human[i],
+            recorder.train_acc_dog[i],
+            recorder.valid_acc_dog[i],
+            recorder.train_acc_breed[i],
+            recorder.valid_acc_breed[i]
+        ])
+    return tabulate(output)
