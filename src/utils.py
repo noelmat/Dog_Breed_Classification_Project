@@ -111,3 +111,13 @@ def create_splits_human_dataset(path):
     human_valid = dirs[-1000:-500]
     human_test = dirs[-500:]
     return human_train, human_valid, human_test
+
+
+def get_batch_stat(ds):
+    dl = get_dl(ds, bs=64, shuffle=False)
+    x, y1, y2 = get_one_batch(dl)
+    return {
+        'mean': x.mean(dim=[0, 2, 3]).numpy().tolist(),
+        'std': x.std(dim=[0, 2, 3]).numpy().tolist()
+    }
+
