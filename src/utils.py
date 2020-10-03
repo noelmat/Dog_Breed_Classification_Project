@@ -1,9 +1,4 @@
-import mimetypes
-import os
-from pathlib import Path
-import torch
-from matplotlib import pyplot as plt
-Path.ls = lambda x: list(x.iterdir())
+from .imports import mimetypes, Path, plt, torch, os
 
 image_extension = [k for k, v in mimetypes.types_map.items() if 'image' in v]
 

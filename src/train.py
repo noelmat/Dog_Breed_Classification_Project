@@ -3,7 +3,7 @@ from . import datasets
 from . import labeller
 from . import engine
 from . import metrics
-import os
+from .imports import Path, os
 from torch import optim
 
 
@@ -81,3 +81,4 @@ def run(n_epochs, model, optimizer, criterion, dls, device, recorder,
         clear_output()
         print()
         print(output)
+

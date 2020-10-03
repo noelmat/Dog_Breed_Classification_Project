@@ -1,5 +1,4 @@
-import torch
-import torch.nn as nn
+from .imports import torch, nn
 
 
 def conv_layer(f_in, f_out, ks, s, p):

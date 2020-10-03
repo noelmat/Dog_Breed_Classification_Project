@@ -1,5 +1,6 @@
-import torch.nn as nn
-from .modelutils import conv_layer, ResBlock, DenseBlock, AdaptivePooling, Lambda, flatten
+from .modelutils import conv_layer, ResBlock, DenseBlock, \
+                     AdaptivePooling, Lambda, flatten
+from .imports import nn
 
 
 class ModelScratch(nn.Module):

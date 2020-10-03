@@ -1,5 +1,4 @@
-from tqdm import tqdm
-import torch
+from .imports import torch, tqdm
 
 
 def train_loop(dl, model, optimizer, scheduler, criterion, device):

@@ -1,4 +1,4 @@
-from torch import nn
+from .imports import nn
 
 
 class CustomLoss(nn.Module):

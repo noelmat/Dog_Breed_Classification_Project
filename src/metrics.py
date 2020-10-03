@@ -1,5 +1,4 @@
-import torch
-import tabulate
+from .imports import tabulate, torch
 
 
 def get_accuracy(acts, targets, sigmoid=True, thresh=0.5):

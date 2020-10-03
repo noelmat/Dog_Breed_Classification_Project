@@ -1,8 +1,5 @@
-from torchvision import transforms
 from . import utils
-from PIL import Image
-import torch
-
+from .imports import Image, torch, transforms
 
 class Dataset:
     """
