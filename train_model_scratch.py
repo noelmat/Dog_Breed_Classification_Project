@@ -36,7 +36,8 @@ batch_stat = utils.get_batch_stat(train_ds)
 train.display_message('+++++++++++++Creating DataLoaders+++++++++++++')
 train_ds, valid_ds = train.get_datasets(path_dogs, human_train, human_valid,
                                         stats=batch_stat, size=args.img_size)
-dls = train.get_dls(train_ds, valid_ds, bs=args.batch_size)
+bs = args.batch_size
+dls = train.get_dls(train_ds, valid_ds, bs=bs)
 train.display_message(
     '+++++++++++++Getting Model ready for training+++++++++++++')
 model = models.ModelScratch()
@@ -48,3 +49,4 @@ recorder = metrics.Recorder()
 n_epochs = args.n_epochs
 train.run(n_epochs, model, optimizer, criterion, dls, device, recorder,
           max_lr=args.max_lr)
+utils.save_model(model, f'model_scratch_{n_epochs}_{bs}_{args.lr}')
