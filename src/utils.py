@@ -102,3 +102,12 @@ def show_batch(dl, rows=3, cols=3, **kwargs):
         label = dog_human_labeller.label_lookup[int(t1.argmax())]
         ax.set_title(f'{label} {breed_labeller.label_lookup[int(t2.item())] if label=="dog" else "" }')
     plt.show()
+
+
+def create_splits_human_dataset(path):
+    path = Path(path)
+    dirs = get_dirs(path)
+    human_train = dirs[:-1000]
+    human_valid = dirs[-1000:-500]
+    human_test = dirs[-500:]
+    return human_train, human_valid, human_test
