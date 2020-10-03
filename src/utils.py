@@ -121,3 +121,13 @@ def get_batch_stat(ds):
         'std': x.std(dim=[0, 2, 3]).numpy().tolist()
     }
 
+
+def save_model(model, model_name, breed_labeller, dog_human_labeller,
+               batch_stat):
+    learner = {
+        'model': model.state_dict(),
+        'breed_labeller': breed_labeller,
+        'dog_human_labeller': dog_human_labeller, 
+        'model_normalization_stats': batch_stat,
+    }
+    torch.save(learner, model_name)
