@@ -15,6 +15,7 @@ parser.add_argument('--path_human', metavar='Path_Human', type=str,
                     required=True)
 parser.add_argument('--batch_size', metavar='bs', type=int, required=True)
 parser.add_argument('--n_epochs', metavar='EPOCHS', type=int, required=True)
+parser.add_argument('--img_size', metavar='bs', type=int, default=224)
 args = parser.parse_args()
 path_dogs = Path(args.path_dogs)
 path_human = Path(args.path_human)
@@ -28,7 +29,7 @@ train_ds, _ = train.get_datasets(path_dogs, human_train, human_valid)
 batch_stat = utils.get_batch_stat(train_ds)
 train.display_message('+++++++++++++Creating DataLoaders+++++++++++++')
 train_ds, valid_ds = train.get_datasets(path_dogs, human_train, human_valid,
-                                        stats=batch_stat)
+                                        stats=batch_stat, size=args.img_size)
 dls = train.get_dls(train_ds, valid_ds, bs=args.batch_size)
 train.display_message(
     '+++++++++++++Getting Model ready for training+++++++++++++')
