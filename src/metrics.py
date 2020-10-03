@@ -49,3 +49,21 @@ def get_metrics(losses, acts, dog_or_human, breed_targets, dog_idx, human_idx):
         'accuracy_breed': get_accuracy(acts[:, 2:],
                                        breed_targets, sigmoid=False)
     }
+
+
+class Recorder:
+    def __init__(self):
+        self.train_acc_human, self.train_acc_dog = [], []
+        self.train_acc_breed, self.train_loss = [], []
+        self.valid_acc_human, self.valid_acc_dog = [], []
+        self.valid_acc_breed, self.valid_loss = [], []
+    
+    def update(self, train_metrics, valid_metrics):
+        self.train_loss.append(train_metrics['loss'])
+        self.train_acc_human.append(train_metrics['accuracy_human'])
+        self.train_acc_dog.append(train_metrics['accuracy_dog'])
+        self.train_acc_breed.append(train_metrics['accuracy_breed'])
+        self.valid_loss.append(valid_metrics['loss'])
+        self.valid_acc_human.append(valid_metrics['accuracy_human'])
+        self.valid_acc_dog.append(valid_metrics['accuracy_dog'])
+        self.valid_acc_breed.append(valid_metrics['accuracy_breed'])
