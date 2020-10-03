@@ -1,6 +1,6 @@
 from .modelutils import conv_layer, ResBlock, DenseBlock, \
                      AdaptivePooling, Lambda, flatten
-from .imports import nn
+from .imports import nn, models
 
 
 class ModelScratch(nn.Module):
@@ -28,3 +28,22 @@ class ModelScratch(nn.Module):
 
     def forward(self, x):
         return self.layers(x)
+
+
+class ModelTransfer(nn.Module):
+    """
+    Model Transfer is a resnet34 pretrained on Imagenet with a custom
+    head for our specific data
+    """
+    def __init__(self):
+        super().__init__()
+        self.model = models.resnet34(pretrained=True)
+        self.model.fc = nn.Linear(512, 300)
+        self.head = nn.Sequential(nn.BatchNorm1d(300),
+                                  nn.ReLU(),
+                                  nn.Linear(300, 135),
+                                  nn.BatchNorm1d(135))
+
+    def forward(self, x):
+        x = self.head(self.model(x))
+        return x
