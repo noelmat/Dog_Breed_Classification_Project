@@ -16,7 +16,7 @@ def get_accuracy(acts, targets, sigmoid=True, thresh=0.5):
     if sigmoid:
         acts = torch.sigmoid(acts)
         acc = ((acts > thresh) == targets).float().mean()
-    else: 
+    else:
         mask = targets > -1
         acts = acts[mask]
         targets = targets[mask]
@@ -42,7 +42,7 @@ def get_metrics(losses, acts, dog_or_human, breed_targets, dog_idx, human_idx):
     dog_or_human = torch.cat(dog_or_human, dim=0)
     breed_targets = torch.cat(breed_targets, dim=0)
     return {
-        'loss': losses.mean(), 
+        'loss': losses.mean(),
         'accuracy_dog': get_accuracy(acts[:, [dog_idx]],
                                      dog_or_human[:, [dog_idx]]),
         'accuracy_human': get_accuracy(acts[:, [human_idx]],
@@ -58,7 +58,7 @@ class Recorder:
         self.train_acc_breed, self.train_loss = [], []
         self.valid_acc_human, self.valid_acc_dog = [], []
         self.valid_acc_breed, self.valid_loss = [], []
-    
+
     def update(self, train_metrics, valid_metrics):
         self.train_loss.append(train_metrics['loss'])
         self.train_acc_human.append(train_metrics['accuracy_human'])
@@ -80,7 +80,8 @@ def get_tab_output(recorder, epoch):
         tabulate table
     """
     output = []
-    output.append(['Epoch', 'T_loss', 'v_loss', 'ta_human', 'va_human','ta_dog','va_dog','ta_breed','va_breed'])
+    output.append(['Epoch', 'T_loss', 'v_loss', 'ta_human', 'va_human',
+                   'ta_dog', 'va_dog', 'ta_breed', 'va_breed'])
     for i in range(epoch+1):
         output.append([
             i+1,
