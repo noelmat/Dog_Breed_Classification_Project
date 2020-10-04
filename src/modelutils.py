@@ -1,4 +1,5 @@
 from .imports import torch, nn
+from functools import partial
 
 
 def conv_layer(f_in, f_out, ks, s, p):
@@ -91,3 +92,22 @@ def flatten(x):
     Returns a flattened version of the input.
     """
     return x.view(x.shape[0], -1)
+
+
+def apply_mod(m,f):
+    f(m)
+    for l in m.children(): apply_mod(l,f)
+
+
+def set_grad(m,b):
+    if isinstance(m, (nn.Linear, nn.BatchNorm2d)): return 
+    if hasattr(m, 'weight'):
+        for p in m.parameters(): p.requires_grad_(b)
+
+
+def freeze(model):
+    apply_mod(model, partial(set_grad, b=False))
+
+
+def unfreeze(model):
+    apply_mod(model, partial(set_grad, b=True))
