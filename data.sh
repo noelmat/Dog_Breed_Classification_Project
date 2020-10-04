@@ -6,6 +6,7 @@ then
 else
     cd input && { curl -O https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip ; cd -; }
     cd input && { curl -O https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/lfw.zip ; cd -; }
+fi
 cd input
 unzip dogImages.zip
 unzip lfw.zip
