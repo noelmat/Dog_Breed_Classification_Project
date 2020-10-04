@@ -6,6 +6,7 @@ from src import train
 from src import models
 from src import loss_func
 from src import metrics
+from src import modelutils
 
 
 parser = argparse.ArgumentParser()
@@ -44,6 +45,9 @@ optimizer = optim.Adam(model.parameters(), lr=args.lr)
 criterion = loss_func.CustomLoss(train_ds.dog_human_labeller)
 recorder = metrics.Recorder()
 n_epochs = args.n_epochs
-
+modelutils.freeze(model.model)
 train.run(n_epochs, model, optimizer, criterion, dls, device, recorder,
           max_lr=args.max_lr)
+utils.save_model(model, f'model_transfer_{n_epochs}_{bs}_{args.lr}',
+                 train_ds.breed_labeller, train_ds.dog_human_labeller,
+                 batch_stat)
