@@ -31,7 +31,7 @@ def get_datasets(path, human_train, human_valid,
     # if stats is None, dataset is being used to calculate batch_stat.
     # So not using transforms.
     train_tfms = None if stats is None \
-        else datasets.get_tfms(size, distortion_scale=0.5)
+        else datasets.get_tfms(size)
     train_ds = datasets.Dataset(
         path, human_train, train_folder,
         breed_labeller=breed_labeller, dog_human_labeller=dog_human_labeller,
