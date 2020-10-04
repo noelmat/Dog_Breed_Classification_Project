@@ -50,4 +50,4 @@ train.run(n_epochs, model, optimizer, criterion, dls, device, recorder,
           max_lr=args.max_lr)
 utils.save_model(model, f'model_transfer_{n_epochs}_{bs}_{args.lr}',
                  train_ds.breed_labeller, train_ds.dog_human_labeller,
-                 batch_stat)
+                 imagenet_stats)
