@@ -45,5 +45,6 @@ class CustomLoss(nn.Module):
         # mask to get only dogs.
         mask = t2 >= 0
         b_loss = self.breed_loss(outputs[mask, 2:], t2[mask])
+        b_loss = 0. if b_loss.isnan() else b_loss
         loss = h_loss + d_loss + b_loss
         return loss
