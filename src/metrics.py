@@ -1,4 +1,6 @@
 from .imports import tabulate, torch
+from sklearn import metrics
+from torch.nn import functional as F
 
 
 def get_accuracy(acts, targets, sigmoid=True, thresh=0.5):
@@ -21,6 +23,16 @@ def get_accuracy(acts, targets, sigmoid=True, thresh=0.5):
         targets = targets[mask]
         acc = (acts.argmax(dim=1) == targets).float().mean()
     return acc
+
+
+def get_roc_auc_score(acts, targets, sigmoid=True):
+    if sigmoid:
+        acts = torch.sigmoid(acts)
+        score = metrics.roc_auc_score(targets, acts)
+    else:
+        acts = F.softmax(acts)
+        score = metrics.roc_auc_score(targets, acts)
+    return score        
 
 
 def get_metrics(losses, acts, dog_or_human, breed_targets, dog_idx, human_idx):
@@ -46,8 +58,8 @@ def get_metrics(losses, acts, dog_or_human, breed_targets, dog_idx, human_idx):
                                      dog_or_human[:, [dog_idx]]),
         'accuracy_human': get_accuracy(acts[:, [human_idx]],
                                        dog_or_human[:, [human_idx]]),
-        'accuracy_breed': get_accuracy(acts[:, 2:],
-                                       breed_targets, sigmoid=False)
+        'accuracy_breed': get_roc_auc_score(acts[:, 2:],
+                                            breed_targets, sigmoid=False)
     }
 
 
