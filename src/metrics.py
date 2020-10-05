@@ -79,8 +79,8 @@ def get_tab_output(recorder, epoch):
         tabulate table
     """
     output = []
-    output.append(['Epoch', 'T_loss', 'v_loss', 'ta_human', 'va_human',
-                   'ta_dog', 'va_dog', 'ta_breed', 'va_breed'])
+    output.append(['Epoch', 'T_loss', 'v_loss', 'va_human',
+                   'va_dog', 'ta_breed', 'va_breed'])
     for i in range(epoch+1):
         output.append([
             i+1,
