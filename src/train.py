@@ -6,6 +6,7 @@ from . import metrics
 from .imports import os, torch
 from torch import optim
 from PIL import ImageFile
+from IPython import display
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
@@ -51,15 +52,18 @@ def get_device():
     return 'cuda' if use_cuda else 'cpu'
 
 
-def clear_output():
+def clear_output(env):
     """
     Clear terminal output.
     """
-    os.system('clear')
+    if env == 'shell':
+        os.system('clear')
+    else:
+        display.clear_output()
 
 
 def run(n_epochs, model, optimizer, criterion, dls, device, recorder,
-        max_lr=0.1):
+        max_lr=0.1, env='notebook'):
     train_dl = dls[0]
     valid_dl = dls[1]
     total_steps = n_epochs * len(train_dl)
@@ -84,7 +88,7 @@ def run(n_epochs, model, optimizer, criterion, dls, device, recorder,
 
         recorder.update(train_metrics, valid_metrics)
         output = metrics.get_tab_output(recorder, epoch)
-        clear_output()
+        clear_output(env)
         print()
         print(output)
 

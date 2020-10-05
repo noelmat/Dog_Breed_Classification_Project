@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 path_dogs = Path(args.path_dogs)
 path_human = Path(args.path_human)
-train.clear_output()
+train.clear_output('shell')
 train.display_message('+++++++++++++Creating Splits+++++++++++++')
 human_train, human_valid, \
     human_test = utils.create_splits_human_dataset(path_human)
@@ -38,5 +38,7 @@ dog_human_labeller = learn_dict['dog_human_labeller']
 breed_labeller = learn_dict['breed_labeller']
 imagenet_stats = learn_dict['model_normalization_stats']
 criterion = loss_func.CustomLoss(dog_human_labeller)
-test_ds = Dataset(path_dogs, human_test, 'test', breed_labeller=breed_labeller, dog_human_labeller=dog_human_labeller, stats=imagenet_stats,size=args.img_size)
+test_ds = Dataset(path_dogs, human_test, 'test', breed_labeller=breed_labeller,
+                  dog_human_labeller=dog_human_labeller, stats=imagenet_stats,
+                  size=args.img_size)
 test.test(model, test_ds, criterion, device)

@@ -24,7 +24,7 @@ args = parser.parse_args()
 
 path_dogs = Path(args.path_dogs)
 path_human = Path(args.path_human)
-train.clear_output()
+train.clear_output('shell')
 train.display_message('+++++++++++++Creating Splits+++++++++++++')
 human_train, human_valid, \
     human_test = utils.create_splits_human_dataset(path_human)
@@ -47,7 +47,7 @@ recorder = metrics.Recorder()
 n_epochs = args.n_epochs
 modelutils.freeze(model.model)
 train.run(n_epochs, model, optimizer, criterion, dls, device, recorder,
-          max_lr=args.max_lr)
+          max_lr=args.max_lr, env='shell')
 utils.save_model(model, f'model_transfer_{n_epochs}_{bs}_{args.lr}',
                  train_ds.breed_labeller, train_ds.dog_human_labeller,
                  imagenet_stats)
