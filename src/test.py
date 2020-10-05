@@ -18,8 +18,8 @@ def test(model, ds, criterion, device):
                    'test_acc_dog', 'test_acc_breed'])
     output.append([
         test_metrics['loss'],
-        test_metrics['accuracy_human'],
-        test_metrics['accuracy_dog'],
-        test_metrics['accuracy_breed']    ])
+        test_metrics['accuracy_human'].item(),
+        test_metrics['accuracy_dog'].item(),
+        test_metrics['accuracy_breed']])
     print(tabulate(output))
     return test_losses, test_acts, test_dog_human_targets, test_breed_targets

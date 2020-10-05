@@ -43,7 +43,7 @@ def get_metrics(losses, acts, dog_or_human, breed_targets, dog_idx, human_idx):
     return {
         'loss': losses.mean(),
         'accuracy_dog': get_accuracy(acts[:, [dog_idx]],
-                                     dog_or_human[:, [dog_idx]]),
+                                     dog_or_human[:, [dog_idx]], thresh=0.9),
         'accuracy_human': get_accuracy(acts[:, [human_idx]],
                                        dog_or_human[:, [human_idx]]),
         'accuracy_breed': get_accuracy(acts[:, 2:],
@@ -84,13 +84,11 @@ def get_tab_output(recorder, epoch):
     for i in range(epoch+1):
         output.append([
             i+1,
-            recorder.train_loss[i],
-            recorder.valid_loss[i],
-            recorder.train_acc_human[i],
-            recorder.valid_acc_human[i],
-            recorder.train_acc_dog[i],
-            recorder.valid_acc_dog[i],
-            recorder.train_acc_breed[i],
-            recorder.valid_acc_breed[i]
+            recorder.train_loss[i].item(),
+            recorder.valid_loss[i].item(),
+            recorder.valid_acc_human[i].item(),
+            recorder.valid_acc_dog[i].item(),
+            recorder.train_acc_breed[i].item(),
+            recorder.valid_acc_breed[i].item()
         ])
     return tabulate(output)
