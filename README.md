@@ -17,6 +17,13 @@ made possible in the fields of Computer Vision. I will be using Deep learning to
 breeds which is not a trivial problem to solve due to the interclass variance and the intraclass
 variance between the dog breeds.
 
+**The Project notebook can be accessed** [here](Final_Notebook.ipynb)
+
+
+**The Project report can be accessed** [here](report.pdf)
+
+**The Project proposal can be accessed**[here](capstone_proposal.pdf)
+
 ### Problem Statement
 The goal of the project is to determine which dog breed a given image contains. I will use
 Convolutional Neural Network (CNN) to classify the images by dog breeds. If the image contains
@@ -29,7 +36,6 @@ Furthermore, One Cycle Scheduling with cosine annealing for scheduling learning 
 momentums will be used.
 
 
-The project notebook can be accessed [here](Final_Notebook.ipynb)
 
 ## Steps to setup the project.
 
@@ -45,6 +51,11 @@ The project notebook can be accessed [here](Final_Notebook.ipynb)
     * `--lr` : The learning rate defaults to 0.1
     * `--max_lr` : The `max_lr` defaults to 0.1
     * `--img_size` : The size of input to the model.
+    Example command :
+    ```
+    python scripts/train_model_scratch.py --path_dogs input/dogImages --path_human input/lfw --batch_size 64 --n_epochs 1 --img_size 64
+    ```
+
 4. The train script saves the model with the name: `model_scratch_{n_epochs}_{breed_accuracy}`
 5. To train the model using transfer learning, run the train_model_transfer.py script.  This script accepts the following command line arguments:
     * `--path_dogs` : path to the [dogImages](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip) folder. If you have used data.sh to setup the data, path_dogs will be `input/dogImages`.
@@ -57,3 +68,7 @@ The project notebook can be accessed [here](Final_Notebook.ipynb)
 
 6. Once the model is trained, the test scripts can be used similarly with commandline arguments. It accepts `--model_path` as a path to the model file.
 
+For model transfer, execute the follow command  example command:
+```
+python scripts/test_model_transfer.py --path_dogs input/dogImages --path_human input/lfw --batch_size 64 --model_path model_transfer_0.83
+```

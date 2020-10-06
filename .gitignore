@@ -4,4 +4,6 @@ input/*
 
 *.pyc
 
-env/
+env/*
+env2/*
+env3/*
