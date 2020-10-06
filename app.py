@@ -59,7 +59,7 @@ def home():
 @app.route("/predict", methods=['POST'])
 def predict():
     img = request.files['file'].read()
-    img = Image.open(BytesIO(img)).convert('RGB')
+    img = Image.open(BytesIO(img)).convert('RGB').Resize((224,224))
     pred = get_prediction(img)
     response = {}
     response["response"] = {
