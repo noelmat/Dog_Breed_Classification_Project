@@ -83,12 +83,12 @@ def get_tab_output(recorder, epoch):
                    'va_dog', 'ta_breed', 'va_breed'])
     for i in range(epoch+1):
         output.append([
-            i+1,
-            recorder.train_loss[i].item(),
-            recorder.valid_loss[i].item(),
-            recorder.valid_acc_human[i].item(),
-            recorder.valid_acc_dog[i].item(),
-            recorder.train_acc_breed[i].item(),
-            recorder.valid_acc_breed[i].item()
+            f"{i+1}",
+            f"{recorder.train_loss[i].item():.6f}",
+            f"{recorder.valid_loss[i].item():.6f}",
+            f"{recorder.valid_acc_human[i].item():.6f}",
+            f"{recorder.valid_acc_dog[i].item():.6f}",
+            f"{recorder.train_acc_breed[i].item():.6f}",
+            f"{recorder.valid_acc_breed[i].item():.6f}"
         ])
     return tabulate(output)
