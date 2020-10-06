@@ -51,7 +51,7 @@ class ModelTransfer(nn.Module):
         self.model.fc = nn.Linear(512, 300)
         self.head = nn.Sequential(nn.BatchNorm1d(300),
                                   nn.ReLU(),
-                                  nn.Dropout(p=0.05),
+                                  nn.Dropout(p=0.2),
                                   nn.Linear(300, 135),
                                   nn.BatchNorm1d(135))
 
