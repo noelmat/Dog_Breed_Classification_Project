@@ -65,6 +65,7 @@ def get_tfms(size=224, distortion_scale=0.3, p=0.5):
         list of transforms
     """
     tfms = [transforms.Resize((int(size*2.5), int(size*2.5))),
+            transforms.Pad(size//4, padding_mode='reflective'),
             transforms.RandomPerspective(distortion_scale=distortion_scale,
                                          p=p),
             transforms.RandomResizedCrop(size, scale=(0.35, 0.75)),
