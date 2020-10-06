@@ -42,7 +42,7 @@ def get_files(path, extensions=image_extension):
     return files
 
 
-def get_dl(ds, bs=8, shuffle=True, num_workers=4):
+def get_dl(ds, bs=8, shuffle=True, num_workers=8):
     """
     Creates a torch.utils.data.DataLoader for the input dataset.
     Args:
