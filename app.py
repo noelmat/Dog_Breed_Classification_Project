@@ -10,7 +10,7 @@ from src.labeller import *
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
-learn_dict = torch.load('model_final.pth', map_location='cpu')
+learn_dict = torch.load('model_transfer_0.83', map_location='cpu')
 model = ModelTransfer(pretrained=False)
 model.load_state_dict(learn_dict['model'])
 model.eval()

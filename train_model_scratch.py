@@ -49,6 +49,6 @@ recorder = metrics.Recorder()
 n_epochs = args.n_epochs
 train.run(n_epochs, model, optimizer, criterion, dls, device, recorder,
           max_lr=args.max_lr, env='shell')
-utils.save_model(model, f'model_scratch_{n_epochs}_{bs}_{args.lr}',
+utils.save_model(model, f'model_scratch_{n_epochs}_{recorder.valid_acc_breed[-1].item():.2f}',
                  train_ds.breed_labeller, train_ds.dog_human_labeller,
                  batch_stat)

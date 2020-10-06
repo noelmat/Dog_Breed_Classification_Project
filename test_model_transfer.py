@@ -40,5 +40,5 @@ imagenet_stats = learn_dict['model_normalization_stats']
 criterion = loss_func.CustomLoss(dog_human_labeller)
 test_ds = Dataset(path_dogs, human_test, 'test', breed_labeller=breed_labeller,
                   dog_human_labeller=dog_human_labeller,
-                  stats= imagenet_stats,size=args.img_size)
+                  stats=imagenet_stats, size=args.img_size)
 test.test(model, test_ds, criterion, device)

@@ -28,3 +28,4 @@ def test(model, ds, criterion, device):
         'dog_human_targets': test_dog_human_targets,
         'breed_targets': test_breed_targets
     }
+    
