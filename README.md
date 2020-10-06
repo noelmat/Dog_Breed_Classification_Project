@@ -29,7 +29,7 @@ Furthermore, One Cycle Scheduling with cosine annealing for scheduling learning 
 momentums will be used.
 
 
-The project notebook can be accessed [here]('Final_Notebook.ipynb')
+The project notebook can be accessed [here](Final_Notebook.ipynb)
 
 ## Steps to setup the project.
 
