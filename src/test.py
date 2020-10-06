@@ -22,4 +22,9 @@ def test(model, ds, criterion, device):
         test_metrics['accuracy_dog'].item(),
         test_metrics['accuracy_breed']])
     print(tabulate(output))
-    return test_losses, test_acts, test_dog_human_targets, test_breed_targets
+    return {
+        'loss': test_losses,
+        'acts': test_acts,
+        'dog_human_targets': test_dog_human_targets,
+        'breed_targets': test_breed_targets
+    }
