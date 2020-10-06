@@ -28,7 +28,10 @@ class ModelScratch(nn.Module):
                       conv_layer(256, 512, ks=3, s=2, p=1),  # 14
                       AdaptivePooling(1),
                       Lambda(flatten),
-                      nn.Linear(512, 135),
+                      nn.Linear(512, 300),
+                      nn.BatchNorm1d(300),
+                      nn.ReLU(),
+                      nn.Linear(300, 135),
                       nn.BatchNorm1d(135)
         )
 
