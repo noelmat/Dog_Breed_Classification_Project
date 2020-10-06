@@ -1,1 +1,1 @@
-web gunincorn app:app
+web gunincorn app:app --log-level debug
