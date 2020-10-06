@@ -107,9 +107,9 @@ def show_batch(dl, rows=3, cols=3, **kwargs):
 def create_splits_human_dataset(path):
     path = Path(path)
     dirs = get_dirs(path)
-    human_train = dirs[:-1000]
-    human_valid = dirs[-1000:-500]
-    human_test = dirs[-500:]
+    human_train = dirs[:-2000]
+    human_valid = dirs[-2000:-1000]
+    human_test = dirs[-1000:]
     return human_train, human_valid, human_test
 
 
