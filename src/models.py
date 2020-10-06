@@ -31,6 +31,7 @@ class ModelScratch(nn.Module):
                       nn.Linear(512, 300),
                       nn.BatchNorm1d(300),
                       nn.ReLU(),
+                      nn.Dropout(p=0.05),
                       nn.Linear(300, 135),
                       nn.BatchNorm1d(135)
         )
