@@ -14,17 +14,17 @@ class ModelScratch(nn.Module):
         super().__init__()
         self.layers = nn.Sequential(
                       conv_layer(3, 16, ks=3, s=2, p=1),  # 112
-                      nn.Dropout(p=0.05),
+                      nn.Dropout2d(p=0.05),
                       DenseBlock(16, 8),
-                      nn.Dropout(p=0.05),
+                      nn.Dropout2d(p=0.05),
                       conv_layer(24, 64, ks=3, s=2, p=1),  # 56
-                      nn.Dropout(p=0.05),            
+                      nn.Dropout2d(p=0.05),          
                       DenseBlock(64, 64),
-                      nn.Dropout(p=0.05),
+                      nn.Dropout2d(p=0.05),
                       conv_layer(128, 256, ks=3, s=2, p=1),  # 28
-                      nn.Dropout(p=0.05),
+                      nn.Dropout2d(p=0.05),
                       ResBlock(256),
-                      nn.Dropout(p=0.05),
+                      nn.Dropout2d(p=0.05),
                       conv_layer(256, 512, ks=3, s=2, p=1),  # 14
                       AdaptivePooling(1),
                       Lambda(flatten),
