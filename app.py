@@ -6,6 +6,7 @@ from PIL import Image, ImageFile
 from src.models import ModelTransfer
 from torchvision import transforms
 import torch
+import os
 from src.labeller import *
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -84,4 +85,4 @@ def add_header(r):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=3001)
+    app.run(host='0.0.0.0',port=os.environ.get('PORT',5000))
