@@ -22,7 +22,9 @@ variance between the dog breeds.
 
 **The Project report can be accessed** [here](report.pdf)
 
-**The Project proposal can be accessed**[here](capstone_proposal.pdf)
+**The Project proposal can be accessed** [here](capstone_proposal.pdf)
+
+**Web app is available** [here](https://dog-breed-a.herokuapp.com/)
 
 ### Problem Statement
 The goal of the project is to determine which dog breed a given image contains. I will use
