@@ -101,6 +101,7 @@ def show_batch(dl, rows=3, cols=3, **kwargs):
         ax.imshow(img)
         label = dog_human_labeller.label_lookup[int(t1.argmax())]
         ax.set_title(f'{label} {breed_labeller.label_lookup[int(t2.item())] if label=="dog" else "" }')
+        ax.axis('off')
     plt.show()
 
 
