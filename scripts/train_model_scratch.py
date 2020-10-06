@@ -1,4 +1,6 @@
 from torch import optim
+import sys
+sys.path.append('.')
 import argparse
 from src.imports import Path
 from src import utils
