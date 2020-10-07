@@ -40,7 +40,15 @@ dog_human_labeller = learn_dict['dog_human_labeller']
 breed_labeller = learn_dict['breed_labeller']
 imagenet_stats = learn_dict['model_normalization_stats']
 criterion = loss_func.CustomLoss(dog_human_labeller)
-test_ds = Dataset(path_dogs, human_test, 'test', breed_labeller=breed_labeller,
-                  dog_human_labeller=dog_human_labeller, stats=imagenet_stats,
-                  size=args.img_size)
-test.test(model, test_ds, criterion, device)
+train_ds =  Dataset(path_dogs, human_test, 'train', breed_labeller=breed_labeller,
+                  dog_human_labeller=dog_human_labeller,
+                  stats=imagenet_stats, size=args.img_size)
+valid_ds = Dataset(path_dogs, human_train, 'valid', breed_labeller=breed_labeller,
+                  dog_human_labeller=dog_human_labeller,
+                  stats=imagenet_stats, size=args.img_size)                  
+test_ds = Dataset(path_dogs, human_valid, 'test', breed_labeller=breed_labeller,
+                  dog_human_labeller=dog_human_labeller,
+                  stats=imagenet_stats, size=args.img_size)
+test.test(model, train_ds, criterion, device, dataset_type='train')
+test.test(model, valid_ds, criterion, device, dataset_type='valid')                  
+test.test(model, test_ds, criterion, device, dataset_type='test')
