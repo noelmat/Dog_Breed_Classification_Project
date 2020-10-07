@@ -2,7 +2,7 @@ from src import utils, metrics, engine
 from src.imports import tabulate
 
 
-def test(model, ds, criterion, device):
+def test(model, ds, criterion, device, dataset_type="test"):
     """
     Evaluates and prints the result to the console.
     """
@@ -14,13 +14,15 @@ def test(model, ds, criterion, device):
         test_losses, test_acts, test_dog_human_targets, test_breed_targets,
         criterion.dog_idx, criterion.human_idx)
     output = []
-    output.append(['Test_loss', 'test_acc_human',
-                   'test_acc_dog', 'test_acc_breed'])
+    output.append([f'{dataset_type}_loss', f'{dataset_type}_acc_human',
+                   f'{dataset_type}_acc_dog', f'{dataset_type}_acc_breed',
+                   f'{dataset_type}_acc_f1score'])
     output.append([
         test_metrics['loss'],
         test_metrics['accuracy_human'].item(),
         test_metrics['accuracy_dog'].item(),
-        test_metrics['accuracy_breed']])
+        test_metrics['accuracy_breed'].item(),
+        test_metrics['f1score_breed']])
     print(tabulate(output))
     return {
         'loss': test_losses,

@@ -1,5 +1,5 @@
 from .imports import tabulate, torch
-
+from sklearn.metrics import f1_score
 
 def get_accuracy(acts, targets, sigmoid=True, thresh=0.5):
     """
@@ -22,6 +22,26 @@ def get_accuracy(acts, targets, sigmoid=True, thresh=0.5):
         acc = (acts.argmax(dim=1) == targets).float().mean()
     return acc
 
+def get_f1score(acts, targets, sigmoid=True, thresh=0.5):
+    """
+    Calculates accuracy for the given activations and targets.
+    Args:
+        acts: model activations.
+        targets: targets.
+        sigmoid: Boolean to apply sigmoid to the activations.
+        thresh: threshold for calculating accuracy.
+    Returns:
+        accuracy: calculated accuracy.
+    """
+    if sigmoid:
+        acts = torch.sigmoid(acts)
+        acc = ((acts > thresh) == targets).float().mean()
+    else:
+        mask = targets > -1
+        acts = acts[mask]
+        targets = targets[mask]
+        acc = f1_score(targets, acts.argmax(dim=1),average='weighted')
+    return acc
 
 def get_metrics(losses, acts, dog_or_human, breed_targets, dog_idx, human_idx):
     """
@@ -47,7 +67,10 @@ def get_metrics(losses, acts, dog_or_human, breed_targets, dog_idx, human_idx):
         'accuracy_human': get_accuracy(acts[:, [human_idx]],
                                        dog_or_human[:, [human_idx]]),
         'accuracy_breed': get_accuracy(acts[:, 2:],
+                                       breed_targets, sigmoid=False),
+        'f1score_breed': get_f1score(acts[:, 2:],
                                        breed_targets, sigmoid=False)
+
     }
 
 
@@ -57,16 +80,20 @@ class Recorder:
         self.train_acc_breed, self.train_loss = [], []
         self.valid_acc_human, self.valid_acc_dog = [], []
         self.valid_acc_breed, self.valid_loss = [], []
+        self.train_f1score_breed, self.valid_f1score_breed = [], []
 
     def update(self, train_metrics, valid_metrics):
         self.train_loss.append(train_metrics['loss'])
         self.train_acc_human.append(train_metrics['accuracy_human'])
         self.train_acc_dog.append(train_metrics['accuracy_dog'])
         self.train_acc_breed.append(train_metrics['accuracy_breed'])
+        self.train_f1score_breed.append(train_metrics['f1score_breed'])
         self.valid_loss.append(valid_metrics['loss'])
         self.valid_acc_human.append(valid_metrics['accuracy_human'])
         self.valid_acc_dog.append(valid_metrics['accuracy_dog'])
         self.valid_acc_breed.append(valid_metrics['accuracy_breed'])
+        self.valid_f1score_breed.append(valid_metrics['f1score_breed'])
+
 
 
 def get_tab_output(recorder, epoch):
@@ -89,6 +116,7 @@ def get_tab_output(recorder, epoch):
             f"{recorder.valid_acc_human[i].item():.6f}",
             f"{recorder.valid_acc_dog[i].item():.6f}",
             f"{recorder.train_acc_breed[i].item():.6f}",
-            f"{recorder.valid_acc_breed[i].item():.6f}"
+            f"{recorder.valid_acc_breed[i].item():.6f}",
+            f"{recorder.valid_f1score_breed[i].item():.6f}"
         ])
     return tabulate(output)
