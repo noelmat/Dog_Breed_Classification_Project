@@ -107,7 +107,7 @@ def get_tab_output(recorder, epoch):
     """
     output = []
     output.append(['Epoch', 'T_loss', 'v_loss', 'va_human',
-                   'va_dog', 'ta_breed', 'va_breed'])
+                   'va_dog', 'ta_breed', 'va_breed', 'tf1_breed', 'vf1_breed'])
     for i in range(epoch+1):
         output.append([
             f"{i+1}",
@@ -117,6 +117,7 @@ def get_tab_output(recorder, epoch):
             f"{recorder.valid_acc_dog[i].item():.6f}",
             f"{recorder.train_acc_breed[i].item():.6f}",
             f"{recorder.valid_acc_breed[i].item():.6f}",
+            f"{recorder.valid_f1score_breed[i].item():.6f}",
             f"{recorder.valid_f1score_breed[i].item():.6f}"
         ])
     return tabulate(output)
